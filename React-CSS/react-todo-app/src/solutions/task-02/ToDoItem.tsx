@@ -1,6 +1,6 @@
 import React from "react";
 import { TodoItemProps } from "../../types";
-import "./ToDoItem.css";
+import "./ToDoItems.css";
 
 /**
  * Task 2: ToDoItem Component

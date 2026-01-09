@@ -25,7 +25,7 @@ import { TodoListProps } from "../../types";
  * The component receives an array of todos as props and renders each one.
  */
 export const ToDoList: React.FC<TodoListProps> = ({ todos }) => {
-  if (todos.length) {
+  if (!todos.length) {
     return <div>No todos available</div>;
   }
 
