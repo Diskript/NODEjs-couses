@@ -141,7 +141,7 @@ export const FilteredToDoList: React.FC = () => {
       >
         <input
           type="text"
-          placeholder="Type to add new todo"
+          placeholder="Add todo"
           value={inputValue}
           onChange={(e) => setInputValue(e.target.value)}
         ></input>

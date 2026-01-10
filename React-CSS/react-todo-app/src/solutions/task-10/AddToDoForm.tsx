@@ -103,9 +103,9 @@ export const AddToDoForm: React.FC = () => {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Enter todo title"
+          placeholder="Add todo"
         />
-        <button type="submit">Add Todo</button>
+        <button type="submit">Submit</button>
       </form>
       <ul>
         {todos.map((todo) => (
