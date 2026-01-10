@@ -10,7 +10,7 @@ export class TodoService {
     }
     return this.api.add({
       title,
-      descriptin: description,
+      description: description,
       status: undefined as any,
     });
   }
@@ -29,16 +29,16 @@ export class TodoService {
   }
 
   async search(keyword: string): Promise<Todo[]> {
-    if (!keyword) {
-      throw new Error("Keyword is required");
-    }
     const todos = await this.api.getAll();
+    if (!keyword) {
+      return todos;
+    }
     const lowerKeyword = keyword.toLowerCase();
     return todos.filter(
       (todo) =>
         todo.title.toLowerCase().includes(lowerKeyword) ||
-        (todo.descriptin &&
-          todo.descriptin.toLowerCase().includes(lowerKeyword)),
+        (todo.description &&
+          todo.description.toLowerCase().includes(lowerKeyword)),
     );
   }
 }

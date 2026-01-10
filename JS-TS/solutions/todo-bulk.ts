@@ -14,7 +14,7 @@ export function clearCompleted(state: Todo[]): Todo[] {
   if (state == null)
     throw new Error("clearCompleted: state is undefined or null");
   if (state.length === 0) throw new Error("clearCompleted: state is empty");
-  const newState = state.filter((todo) => (todo.status = TodoStatus.COMPLETED));
+  const newState = state.filter((todo) => todo.status !== TodoStatus.COMPLETED);
   if (newState.length === state.length) {
     throw new Error("clearCompleted: no completed todos found");
   } else {

@@ -6,7 +6,7 @@ export function createTodo(input: NewTodo): Todo {
   const newTodo: Todo = {
     id: nextId++,
     title: input.title,
-    descriptin: input.descriptin,
+    description: input.description,
     status: input.status || TodoStatus.PENDING,
     createdAt: new Date(),
   };
