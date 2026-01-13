@@ -11,113 +11,106 @@ class MessageSystem extends EventEmitter {
     this.messages = [];
     this.users = new Set();
     this.messageId = 1;
+    this.type = ["message", "notification", "alert"];
+    this.rateLimits = new Map();
   }
 
-  /**
-   * Send a message to the system
-   *
-   * Create a message object with id, type, content, timestamp, sender
-   * Add message to messages array
-   * Keep only last 100 messages for memory management
-   * Emit the message event and specific type event
-   *
-   * @param {string} type - Message type ('message', 'notification', 'alert')
-   * @param {string} content - Message content
-   * @param {string} sender - Optional sender name
-   * @returns {object} Created message object
-   */
-  sendMessage(type, content, sender = "System") {}
+  sendMessage(type, content, sender = "System") {
+    const now = Date.now();
+    const limit = this.rateLimits.get(sender);
+    
+    if (limit && now - limit < 1000) {
+      this.emit('rate-limit-exceeded', { sender });
+      return null;
+    }
+    
+    this.rateLimits.set(sender, now);
+    
+    const message = {
+      id: this.messageId++,
+      type,
+      content,
+      timestamp: new Date().toISOString(),
+      sender,
+    };
 
-  /**
-   * Subscribe to all message types
-   *
-   * Listen to all messages using the 'message' event
-   *
-   * @param {function} callback - Callback function to handle messages
-   */
-  subscribeToMessages(callback) {}
+    this.messages.push(message);
+    this.messages = this.messages.slice(-100);
 
-  /**
-   * Subscribe to specific message type
-   *
-   *  Listen to specific message type events
-   *
-   * @param {string} type - Message type to subscribe to
-   * @param {function} callback - Callback function to handle messages
-   */
-  subscribeToType(type, callback) {}
+    this.emit("message", message);
+    this.emit(type, message);
 
-  /**
-   * Get current number of active users
-   *
-   * Return the number of users
-   *
-   * @returns {number} Number of active users
-   */
-  getUserCount() {}
+    return message;
+  }
 
-  /**
-   * Get the last N messages (default 10)
-   *
-   * Return the last 'count' messages
-   *
-   * @param {number} count - Number of messages to retrieve
-   * @returns {array} Array of recent messages
-   */
-  getMessageHistory(count = 10) {}
+  subscribeToMessages(callback) {
+    this.on("message", callback);
+  }
 
-  /**
-   * Add a user to the system
-   *
-   * Add user to users set (avoid duplicates)
-   * Create and emit user-joined event
-   *
-   * @param {string} username - Username to add
-   */
-  addUser(username) {}
+  subscribeToType(type, callback) {
+    this.on(type, callback);
+  }
 
-  /**
-   * Remove a user from the system
-   *
-   * Remove user from users set
-   * Create and emit user-left event
-   *
-   * @param {string} username - Username to remove
-   */
-  removeUser(username) {}
+  getUserCount() {
+    return this.users.size;
+  }
 
-  /**
-   * Get all active users
-   *
-   * Convert users Set to Array and return
-   *
-   * @returns {array} Array of usernames
-   */
-  getActiveUsers() {}
+  getMessageHistory(count = 10) {
+    return this.messages.slice(-count);
+  }
 
-  /**
-   * Clear all messages
-   *
-   * Clear messages array
-   * Emit history-cleared event
-   */
-  clearHistory() {}
+  addUser(username) {
+    this.users.add(username);
+    this.emit("user-joined", { content: `${username} joined` });
+  }
 
-  /**
-   * Get system statistics
-   *
-   * Calculate and return statistics
-   *
-   * @returns {object} System stats
-   */
-  getStats() {}
+  removeUser(username) {
+    this.users.delete(username);
+    this.emit("user-left", { content: `${username} left` });
+  }
+
+  getActiveUsers() {
+    return Array.from(this.users);
+  }
+
+  clearHistory() {
+    this.messages = [];
+    this.emit("history-cleared");
+  }
+
+  getStats() {
+    return {
+      totalMessages: this.messages.length,
+      activeUsers: this.users.size,
+      messagesByType: {
+        message: this.messages.filter(m => m.type === 'message').length,
+        notification: this.messages.filter(m => m.type === 'notification').length,
+        alert: this.messages.filter(m => m.type === 'alert').length
+      }
+    };
+  }
+
+  searchMessages(query) {
+    return this.messages.filter(m => 
+      m.content.toLowerCase().includes(query.toLowerCase()) ||
+      m.sender.toLowerCase().includes(query.toLowerCase())
+    );
+  }
+
+  filterByType(type) {
+    return this.messages.filter(m => m.type === type);
+  }
+
+  filterBySender(sender) {
+    return this.messages.filter(m => m.sender === sender);
+  }
 }
 
 // Export the MessageSystem class
 module.exports = MessageSystem;
 
 // Example usage (for testing):
-const isReadyToTest = false;
+const isReadyToTest = true;
 
 if (isReadyToTest) {
   const messenger = new MessageSystem();
