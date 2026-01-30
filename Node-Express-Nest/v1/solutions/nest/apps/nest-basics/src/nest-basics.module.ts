@@ -7,9 +7,10 @@ import { UserModule } from './user-module/user-module.module';
 import { AuditModule } from './audit-module/audit.module';
 import { ControllerModule } from './controller-module/controller.module';
 import { ToDoModule } from './to-do/to-do.module';
+import { PrismaModule } from './prisma/prisma.module';
 
 @Module({
-  imports: [LoggerModule, MathModule, UserModule, AuditModule, ControllerModule, ToDoModule],
+  imports: [PrismaModule, LoggerModule, MathModule, UserModule, AuditModule, ControllerModule, ToDoModule],
   controllers: [NestBasicsController],
   providers: [NestBasicsService],
 })

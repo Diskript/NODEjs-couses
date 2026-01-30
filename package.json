@@ -23,6 +23,8 @@
     "@nestjs/cli": "^11.0.16",
     "@nestjs/testing": "^11.1.12",
     "@types/jest": "^30.0.0",
+    "@types/node": "^25.1.0",
+    "@types/pg": "^8.16.0",
     "@typescript-eslint/parser": "^5.62.0",
     "eslint": "^8.57.1",
     "eslint-plugin-react": "^7.37.5",
@@ -30,10 +32,11 @@
     "jest": "^30.0.4",
     "jiti": "^2.6.1",
     "nodemon": "^3.1.11",
-    "prettier": "^3.7.4",
+    "prettier": "^3.8.1",
     "prettier-eslint": "^16.4.2",
+    "prettier-plugin-prisma": "^5.0.0",
     "ts-jest": "^29.1.0",
-    "typescript": "^4.9.5",
+    "typescript": "^5.9.3",
     "typescript-eslint": "^8.51.0"
   },
   "dependencies": {
@@ -41,10 +44,15 @@
     "@nestjs/core": "^11.1.12",
     "@nestjs/mapped-types": "^2.1.0",
     "@nestjs/platform-express": "^11.1.12",
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.3.0",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.14.3",
+    "dotenv": "^17.2.3",
     "express": "^5.1.0",
     "mo": "^1.7.3",
+    "pg": "^8.17.2",
+    "prisma": "^7.3.0",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.2"
   }
