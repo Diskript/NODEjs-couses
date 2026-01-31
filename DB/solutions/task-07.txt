@@ -1,0 +1,16 @@
+Task 07: Connecting Todo Project to Database Using an ORM
+
+IMPLEMENTATION LOCATION:
+- NestJS project with TypeORM implementation
+- Path: Node-Express-Nest/v0/solutions/nest-app/ or Node-Express-Nest/v1/solutions/nest/
+
+DESCRIPTION OF WORK:
+1. Used TypeORM as the ORM (NestJS default)
+2. Configured database connection in app.module.ts
+3. Defined User and Todo entities with proper relationships
+4. Created migrations for users and todos tables
+5. Implemented seed script to populate initial data
+
+COMMIT HASH REFERENCE:
+1511f6c8404ad2ed8371f3d66109c449baacc446
+

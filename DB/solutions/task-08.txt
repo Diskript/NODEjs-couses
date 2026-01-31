@@ -1,0 +1,17 @@
+Task 08: Implementing CRUD Operations with an ORM
+
+IMPLEMENTATION LOCATION:
+- NestJS project with TypeORM CRUD operations
+- Path: Node-Express-Nest/v0/solutions/nest-app/todo/ or Node-Express-Nest/v1/solutions/nest/
+
+DESCRIPTION OF WORK:
+1. Implemented Create operation - POST endpoint to create new todos
+2. Implemented Read operation - GET endpoint to retrieve todos (with filtering by status/user)
+3. Implemented Update operation - PUT/PATCH endpoint to update todo by ID
+4. Implemented Delete operation - DELETE endpoint to remove todo by ID
+5. Used TypeORM repository pattern for database operations
+
+COMMIT HASH REFERENCE:
+1511f6c8404ad2ed8371f3d66109c449baacc446
+
+
