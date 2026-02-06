@@ -1,0 +1,60 @@
+TASK 01: GIT FUNDAMENTALS - SOLUTION
+=====================================
+
+ALL GIT COMMANDS USED:
+----------------------
+
+1. mkdir my-first-repo
+   - Creates a new directory for the repository
+
+2. cd my-first-repo
+   - Changes into the new directory
+
+3. git init
+   - Initializes an empty Git repository in the current directory
+
+4. git config user.name "Student"
+   - Sets the user name for commits in this repository
+
+5. git config user.email "student@example.com"
+   - Sets the user email for commits in this repository
+
+6. git add .gitignore
+   - Stages the .gitignore file for commit
+
+7. git commit -m "Add .gitignore file"
+   - Creates the first commit with .gitignore file
+
+8. git add README.md package.json
+   - Stages both README.md and package.json files together
+
+9. git commit -m "Add README and package.json"
+   - Creates the second commit with both files
+
+10. git log --oneline
+    - Displays commit history in compact format
+
+
+OUTPUT OF git log --oneline:
+-----------------------------
+b3ed1f2 Add README and package.json
+e6ea051 Add .gitignore file
+
+
+BRIEF EXPLANATION OF EACH COMMAND:
+-----------------------------------
+
+git init:
+  Initializes a new Git repository by creating a .git directory that tracks all changes.
+
+git config:
+  Configures Git settings. user.name and user.email are required for commit authorship.
+
+git add:
+  Stages files for commit. Moves files from working directory to staging area.
+
+git commit:
+  Records staged changes to the repository with a descriptive message.
+
+git log --oneline:
+  Shows commit history in a condensed format (one line per commit with hash and message).

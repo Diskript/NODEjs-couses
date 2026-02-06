@@ -1,0 +1,79 @@
+TASK 02: GIT BRANCHING - SOLUTION
+==================================
+
+ALL GIT COMMANDS USED:
+----------------------
+STEPS: 
+
+1. git checkout -b feature/add-scripts
+   - Creates a new branch called 'feature/add-scripts' and switches to it
+
+2. [Modified package.json to add scripts section]
+
+3. git add package.json
+   - Stages the modified package.json file
+
+4. git commit -m "Add npm scripts to package.json"
+   - Commits the changes on the feature branch
+
+5. git checkout main
+   - Switches back to the main branch
+
+6. cat package.json
+   - Verifies that main branch still has the old version (no scripts)
+
+7. git checkout -b feature/add-dependencies
+   - Creates another new branch from main and switches to it
+
+8. git branch -a
+   - Lists all branches in the repository
+
+9. git checkout main
+   - Switches back to main branch for merging
+
+10. git merge feature/add-scripts
+    - Merges the feature/add-scripts branch into main
+
+11. git branch -d feature/add-scripts
+    - Deletes the merged feature branch
+
+12. git branch -a
+    - Lists all remaining branches
+
+13. git log --graph --oneline --all
+    - Shows commit history with graph visualization
+
+
+OUTPUT OF git branch -a AT DIFFERENT STAGES:
+--------------------------------------------
+
+Stage 1 - After creating both feature branches:
+  feature/add-dependencies
+  feature/add-scripts
+  main
+
+Stage 2 - After merging and deleting feature/add-scripts:
+  feature/add-dependencies
+* main
+
+
+OUTPUT OF git log --graph --oneline:
+-------------------------------------
+* 3bcbde6 Add npm scripts to package.json
+* b3ed1f2 Add README and package.json
+* e6ea051 Add .gitignore file
+
+
+KEY OBSERVATIONS:
+-----------------
+
+1. Branch Creation: git checkout -b creates and switches to a new branch in one command
+
+2. Branch Isolation: Changes on feature/add-scripts were not visible on main until merged
+
+3. Fast-Forward Merge: The merge was a fast-forward (no merge commit needed) because 
+   main had no new commits since the branch was created
+
+4. Branch Cleanup: After merging, the feature branch was safely deleted with -d flag
+
+5. Multiple Branches: feature/add-dependencies remains unmerged and still exists

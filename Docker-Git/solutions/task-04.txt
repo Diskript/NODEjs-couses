@@ -1,0 +1,115 @@
+TASK 04: GIT CONFLICTS - SOLUTION
+==================================
+
+ALL GIT COMMANDS USED:
+----------------------
+
+1. git checkout -b feature/update-readme-v1
+   - Creates and switches to feature/update-readme-v1 branch from main
+
+2. [Modified README.md title to "My Awesome Project v1"]
+
+3. git add README.md
+   - Stages the modified README.md
+
+4. git commit -m "Update README title to v1"
+   - Commits the v1 changes
+
+5. git checkout main
+   - Switches back to main branch
+
+6. git checkout -b feature/update-readme-v2
+   - Creates and switches to feature/update-readme-v2 branch from main
+
+7. [Modified README.md title to "My Super Project v2"]
+
+8. git add README.md
+   - Stages the modified README.md
+
+9. git commit -m "Update README title to v2"
+   - Commits the v2 changes
+
+10. git checkout main
+    - Switches to main branch for merging
+
+11. git merge feature/update-readme-v1
+    - Merges first feature branch (fast-forward merge)
+
+12. git merge feature/update-readme-v2
+    - Attempts to merge second feature branch (creates conflict)
+
+13. [Manually resolved conflict in README.md]
+
+14. git add README.md
+    - Stages the resolved file
+
+15. git commit -m "Merge feature/update-readme-v2: Resolve conflict by combining both titles"
+    - Completes the merge with descriptive message
+
+16. git log --oneline --graph
+    - Views commit history with graph visualization
+
+
+CONFLICT MARKERS CONTENT:
+--------------------------
+
+<<<<<<< HEAD
+# My Awesome Project v1
+=======
+# My Super Project v2
+>>>>>>> feature/update-readme-v2
+
+
+HOW THE CONFLICT WAS RESOLVED:
+-------------------------------
+
+The conflict occurred because both branches modified the same line (the title) in README.md.
+
+Resolution Strategy:
+- Combined both titles creatively into: "My Awesome Super Project v1 & v2"
+- This preserves the intent of both changes
+- Removed all conflict markers (<<<<<<, =======, >>>>>>>)
+- Kept the rest of the file unchanged
+
+
+FINAL COMMIT MESSAGE:
+---------------------
+
+"Merge feature/update-readme-v2: Resolve conflict by combining both titles"
+
+
+GIT LOG OUTPUT (with graph):
+-----------------------------
+
+*   4d3c1e0 Merge feature/update-readme-v2: Resolve conflict by combining both titles
+|\  
+| * d5a5fb1 Update README title to v2
+* | 0900f5e Update README title to v1
+|/  
+* ddb338a Add Docker configuration and app.js
+* 3bcbde6 Add npm scripts to package.json
+* b3ed1f2 Add README and package.json
+* e6ea051 Add .gitignore file
+
+
+KEY LEARNINGS:
+--------------
+
+1. Merge Conflicts: Occur when the same lines are modified in different branches
+
+2. Conflict Markers:
+   - <<<<<<< HEAD: Shows current branch content
+   - =======: Separates the two versions
+   - >>>>>>> branch-name: Shows incoming branch content
+
+3. Resolution Process:
+   - Identify conflicting sections
+   - Decide how to combine or choose changes
+   - Remove all conflict markers
+   - Stage and commit the resolved file
+
+4. Fast-Forward vs 3-Way Merge:
+   - First merge was fast-forward (no divergent history)
+   - Second merge required 3-way merge (divergent branches)
+
+5. Good Commit Messages: Describe what was merged and how conflicts were resolved

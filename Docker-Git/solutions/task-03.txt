@@ -1,0 +1,138 @@
+TASK 03: DOCKER FUNDAMENTALS - SOLUTION
+========================================
+
+FILES CREATED:
+--------------
+
+1. app.js - Basic HTTP server
+2. package.json - Updated with Node.js 24.x
+3. Dockerfile - Container configuration
+
+
+DOCKERFILE CONTENT:
+-------------------
+FROM node:24-alpine
+
+WORKDIR /app
+
+COPY package.json ./
+
+RUN npm install
+
+COPY . .
+
+EXPOSE 3000
+
+CMD ["node", "app.js"]
+
+
+ALL DOCKER COMMANDS TO RUN:
+----------------------------
+
+1. docker build -t my-node-app:v1 .
+   - Builds Docker image from Dockerfile with tag my-node-app:v1
+
+2. docker images
+   - Lists all Docker images to verify build
+
+3. docker run -d -p 3000:3000 --name my-node-container my-node-app:v1
+   - Runs container in detached mode (-d)
+   - Maps port 3000 from container to host (-p 3000:3000)
+   - Names the container my-node-container
+
+4. docker ps
+   - Lists all running containers
+
+5. docker inspect my-node-container
+   - Shows detailed information about the container
+
+6. curl http://localhost:3000
+   - Tests the application (should return "Hello Docker!")
+
+7. docker logs my-node-container
+   - Views container logs
+
+8. docker stop my-node-container
+   - Stops the running container
+
+9. docker rm my-node-container
+   - Removes the stopped container
+
+10. docker rmi my-node-app:v1
+    - Removes the Docker image (optional cleanup)
+
+
+EXPECTED OUTPUTS:
+-----------------
+
+docker images (after build):
+REPOSITORY      TAG     IMAGE ID           CREATED             SIZE
+my-node-app     v1      dcb10080260e    8 minutes ago         56.7MB
+
+docker ps (while running):
+CONTAINER ID   IMAGE            COMMAND                  CREATED         STATUS         PORTS                                         NAMES
+7c1cc8b4219d   my-node-app:v1   "docker-entrypoint.s…"   9 seconds ago   Up 9 seconds   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp   my-node-container
+
+docker inspect:
+
+[
+    {
+        "Id": "7c1cc8b4219dac90be23675fba890e107436f505a5378df7a7bd33ca44eef5db",
+        "Created": "2026-02-06T16:19:26.295064932Z",
+        "Path": "docker-entrypoint.sh",
+        "Args": [
+            "node",
+            "app.js"
+        ],
+        "State": {
+            "Status": "running",
+            "Running": true,
+            "Paused": false,
+            "Restarting": false,
+            "OOMKilled": false,
+            "Dead": false,
+            "Pid": 90333,
+            "ExitCode": 0,
+            "Error": "",
+            "StartedAt": "2026-02-06T16:19:26.3896212Z",
+            "FinishedAt": "0001-01-01T00:00:00Z"
+        }, thats all for you
+
+curl http://localhost:3000:
+Hello Docker!
+
+docker logs my-node-container:
+Server running on port 3000
+
+
+DOCKERFILE EXPLANATION:
+-----------------------
+
+FROM node:24-alpine:
+  Uses Node.js 24 Alpine Linux base image (lightweight)
+
+WORKDIR /app:
+  Sets working directory inside container to /app
+
+COPY package.json ./:
+  Copies package.json to container (for dependency installation)
+
+RUN npm install:
+  Installs Node.js dependencies inside container
+
+COPY . .:
+  Copies all application files to container
+
+EXPOSE 3000:
+  Documents that container listens on port 3000
+
+CMD ["node", "app.js"]:
+  Defines default command to run when container starts
+
+
+NOTES:
+------
+- All files are listed in README.md in the ./../README.md
+- Run Docker commands from that directory
+- If permission denied, add user to docker group or use sudo
+- Test app at http://localhost:3000 after running container

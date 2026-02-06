@@ -1,0 +1,164 @@
+TASK 05: DOCKER OPTIMIZATION - SOLUTION
+========================================
+
+FILES CREATED:
+--------------
+
+1. src/index.ts - TypeScript Express server
+2. package.json - Updated with TypeScript dependencies
+3. tsconfig.json - TypeScript configuration
+4. Dockerfile.single - Single-stage build
+5. Dockerfile.multi - Multi-stage build
+6. .dockerignore - Docker ignore file
+
+
+SINGLE-STAGE DOCKERFILE:
+-------------------------
+FROM node:24
+
+WORKDIR /app
+
+COPY package.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+
+
+MULTI-STAGE DOCKERFILE:
+------------------------
+FROM node:24 AS builder
+
+WORKDIR /app
+
+COPY package.json ./
+
+RUN npm install
+
+COPY . .
+
+RUN npm run build
+
+FROM node:24-alpine
+
+WORKDIR /app
+
+COPY package.json ./
+
+RUN npm install --production
+
+COPY --from=builder /app/dist ./dist
+
+EXPOSE 3000
+
+CMD ["npm", "start"]
+
+
+.DOCKERIGNORE CONTENT:
+----------------------
+node_modules
+dist
+src
+*.ts
+tsconfig.json
+.git
+.gitignore
+*.md
+*.log
+
+
+ALL DOCKER COMMANDS TO RUN:
+----------------------------
+
+1. docker build -f Dockerfile.single -t my-ts-app:single .
+   - Builds single-stage Docker image
+
+2. docker images | grep my-ts-app
+   - Check single-stage image size
+
+3. docker build -f Dockerfile.multi -t my-ts-app:multi .
+   - Builds multi-stage Docker image
+
+4. docker images | grep my-ts-app
+   - Compare both image sizes
+
+5. docker run -d -p 3000:3000 --name ts-container my-ts-app:multi
+   - Run the optimized multi-stage container
+
+6. curl http://localhost:3000
+   - Test the application
+
+7. docker logs ts-container
+   - View container logs
+
+8. docker stop ts-container && docker rm ts-container
+   - Cleanup
+
+
+EXPECTED IMAGE SIZE COMPARISON:
+--------------------------------
+
+Single-stage (node:24):
+REPOSITORY    TAG       SIZE
+my-ts-app     single    ~1.1GB
+
+Multi-stage (node:24-alpine):
+REPOSITORY    TAG       SIZE
+my-ts-app     multi     ~200MB
+
+Size reduction: ~80-85%
+
+
+KEY OPTIMIZATIONS:
+------------------
+
+1. Multi-stage Build:
+   - Stage 1: Build with full node:24 image (includes build tools)
+   - Stage 2: Production with node:24-alpine (minimal runtime)
+   - Only compiled JS files copied to final image
+
+2. .dockerignore Benefits:
+   - Excludes source TypeScript files
+   - Excludes node_modules (installed fresh in container)
+   - Reduces build context size
+   - Faster build times
+
+3. Production Dependencies:
+   - npm install --production in final stage
+   - Excludes devDependencies (TypeScript, @types)
+   - Smaller final image
+
+4. Alpine Linux:
+   - Minimal base image (~5MB vs ~130MB)
+   - Reduced attack surface
+   - Faster deployment
+
+
+DOCKERFILE EXPLANATION:
+-----------------------
+
+Single-stage:
+  - Uses full node:24 image for everything
+  - Includes all dependencies (dev + production)
+  - Contains TypeScript compiler and source files
+  - Larger but simpler
+
+Multi-stage:
+  - Builder stage: Compiles TypeScript with all tools
+  - Production stage: Only runtime dependencies and compiled JS
+  - COPY --from=builder: Copies only dist folder from first stage
+  - Much smaller final image
+
+
+NOTES:
+------
+- All files are listed in README.md in the ./../README.md
+- Multi-stage build is production-ready
+- .dockerignore improves build performance
+- Alpine images are more secure and efficient
